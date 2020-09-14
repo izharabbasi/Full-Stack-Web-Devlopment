@@ -1,3 +1,8 @@
 {
-    "python.pythonPath": "flaskenv\\Scripts\\python.exe"
+    "python.pythonPath": "flaskenv\\Scripts\\python.exe",
+    "python.autoComplete.extraPaths": ["./web_blog"],
+    "python.linting.pylintArgs": [
+        "--errors-only",
+	    "--disable=E0401"
+    ]
 }

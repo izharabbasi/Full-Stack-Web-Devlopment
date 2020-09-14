@@ -1,15 +1,15 @@
-from database import Database
+from database.database import Database
 import datetime
 import uuid
 
 class Post(object):
-    def __init__(self, blog_id, title,content,author,date= datetime.datetime.utcnow(),id=None):
+    def __init__(self, blog_id, title,content,author,date= datetime.datetime.utcnow(),_id=None):
         self.blog_id = blog_id
         self.title = title
         self.content = content
         self.author = author
         self.date = date
-        self.id = uuid.uuid4().hex if id is None else id
+        self._id = uuid.uuid4().hex if _id is None else _id
         
 
     def save_to_mongo(self):
@@ -21,14 +21,14 @@ class Post(object):
             'title': self.title,
             'content':self.content,
             'author':self.author,
-            'id':self.id,
+            '_id':self._id,
             'date':self.date
         }
     
-    @staticmethod
-    def from_mongo(id):
-        return Database.find_one(collection='posts', query={'id':id})
-
+    @classmethod
+    def from_mongo(cls,id):
+        post_data = Database.find_one(collection='posts', query={'_id':id})
+        return cls(**post_data)
     @staticmethod
     def from_blog(id):
         return Database.find_one(collection='posts',query={'blog_id': id})
